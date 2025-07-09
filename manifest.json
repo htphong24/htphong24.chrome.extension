@@ -1,0 +1,27 @@
+{
+  "name": "Phong's Extension",
+  "version": "1.0",
+  "manifest_version": 3,
+  "description": "htphong24's extension",
+  "permissions": ["scripting","storage"],
+  "host_permissions": ["https://robinhood.com/stocks/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Toggle Extension Enhancer"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://robinhood.com/stocks/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["inject.js","robinhood.js"],
+      "matches": ["https://robinhood.com/*"]
+    }
+  ]
+}
