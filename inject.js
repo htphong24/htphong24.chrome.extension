@@ -1,23 +1,43 @@
 import { cleanupSpace } from "./robinhood.js";
 
-function runRobinhoodScript() {
-  const debouncedReplace = debounce(runRobinhoodScript, 100);
+console.log("running inject.js");
+
+const runRobinhoodScript = () => {
+  console.log("inject.js > runRobinhoodScript...");
+
+  let cleanupDone = false;
+
+  const debouncedCleanup = debounce(() => {
+    if (cleanupDone) {
+      observer.disconnect(); // stop observing
+      return;
+    }
+
+    const updated = cleanupSpace();
+
+    if (updated) {
+      cleanupDone = true;
+      observer.disconnect(); // stop observing once cleanup succeeds
+    }
+  }, 1000);
 
   const observer = new MutationObserver(() => {
-    const updated = debouncedReplace();
-    if (updated) {
-      observer.disconnect(); // stop watching once done
-    }
+    debouncedCleanup();
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
 
-  // initial call
-  cleanupSpace();
+  // Initial call
+  const initialCleanup = cleanupSpace();
+
+  if (initialCleanup) {
+    cleanupDone = true;
+    observer.disconnect(); // stop observing if initial cleanup succeeded
+  }
 }
 
 // debounce helper
-function debounce(fn, delay) {
+const debounce = (fn, delay) => {
   let timeout;
   return function (...args) {
     clearTimeout(timeout);

@@ -1,3 +1,5 @@
+console.log("running content.js");
+
 chrome.storage.local.get('htphong24_extension_enabled', (result) => {
   console.log("result.htphong24_extension_enabled: ", result.htphong24_extension_enabled);
   if (!result.htphong24_extension_enabled) {

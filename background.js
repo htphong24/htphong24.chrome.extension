@@ -1,3 +1,5 @@
+console.log("running background.js");
+
 chrome.action.onClicked.addListener(async (tab) => {
   const key = 'htphong24_extension_enabled';
   

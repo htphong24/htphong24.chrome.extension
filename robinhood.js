@@ -1,61 +1,50 @@
-export function cleanupSpace() {
-  //console.log("executing runRobinhoodScript...");
-  const match = window.location.pathname.match(/^\/stocks\/([A-Z]+)/);
-  if (!match) return;
+console.log("running robinhood.js");
 
-  const ticker = match[1];
+const cleanupSpace = () => {
+  console.log("robinhood.js > cleanupSpace...");
+  //const match = window.location.pathname.match(/^\/stocks\/([A-Z]+)/);
+  //if (!match) return;
+
+  //const ticker = match[1];
 
   // ticker name
-  if (document.querySelector("h1") != null) {
+  //console.log('document.querySelector("h1"): ', document.querySelector("h1"));
+  //console.log('document.querySelector("nav"): ', document.querySelector("nav"));
+  if (
+    // ticker name
+    document.querySelector("h1") != null &&
+    // navigation bar
+    document.querySelector("nav") != null &&
+    // main content
+    document.querySelector("main.css-evezer") != null &&
+    document.querySelector("main.css-evezer div div") != null &&
+    // order panel
+    document.querySelector("aside") != null &&
+    // Disclosure
+    document.querySelector("div[data-testid='DisclosureContentMain']") != null
+  ) {
     document.querySelector("h1").style.display = "none";
-  }
-
-  // price
-  //if (document.querySelector("h2 div div") != null) {
-  //  document.querySelector("h2 div div").innerHTML = "<span>" + ticker + "</span> " + document.querySelector("h2 div div").innerHTML;
-  //}
-
-  // navigation bar
-  if (document.querySelector("nav") != null) {
     document.querySelector("nav").style.display = "none";
-  }
-
-  // main content
-  if (document.querySelector("main.css-evezer") != null) {
     document.querySelector("main.css-evezer").style.padding = 0;
-  }
-  if (document.querySelector("main.css-evezer div div") != null) {
     document.querySelector("main.css-evezer div div").style.paddingTop = 0;
-  }
-
-  // order panel
-  if (document.querySelector("aside") != null) {
     document.querySelector("aside").style.padding = 0;
     document.querySelector("aside").style.position = "inherit";
+    document.querySelector("div[data-testid='DisclosureContentMain']").style.display = "none";
+    cleanupSections();
+
+    return true; // indicates change was made
   }
 
+  return false;
+}
+
+const cleanupSections = () => {
   // Stock Lending
   document.querySelectorAll("section").forEach((section) => {
     if (section.textContent.toLowerCase().includes("stock lending")) {
       section.style.display = "none";
     }
   });
-
-  // About
-  //document.querySelectorAll("section")[4].style.display = "none";
-
-  // Key statistics - not working
-  //console.log("printing document.querySelectorAll('section')[5]...");
-  //console.log(document.querySelectorAll('section')[5]);
-  //document.querySelectorAll("section")[5].style.display = "none";
-  // document.querySelectorAll('section').forEach(section => {
-  // console.log("debugging key statistics...");
-  // console.log(section.querySelector('h2 span').textContent);
-  // if (section.textContent.toLowerCase().includes('key statistics')) {
-  // console.log("found key statistics...");
-  // section.style.display = 'none';
-  // }
-  // });
 
   // Trading Trends
   document.querySelectorAll("section").forEach((section) => {
@@ -80,9 +69,7 @@ export function cleanupSpace() {
 
   // People also own - not working
   document.querySelectorAll("section").forEach((section) => {
-    //console.log("debugging people also own...");
     if (section.textContent.toLowerCase().includes("people also own")) {
-      //console.log("found people also own...");
       section.style.display = "none";
     }
   });
@@ -93,11 +80,6 @@ export function cleanupSpace() {
       section.style.display = "none";
     }
   });
+};
 
-  // Disclosure
-  if (document.querySelector("div[data-testid='DisclosureContentMain']") != null) {
-    document.querySelector("div[data-testid='DisclosureContentMain']").style.display = "none";
-  }
-
-  return true; // indicates change was made
-}
+export { cleanupSpace }; 
